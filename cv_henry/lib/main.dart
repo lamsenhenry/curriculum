@@ -9,7 +9,7 @@ void main() {
       '/first': (context) => const FirstRoute(),
       '/second': (context) => const SecondRoute(),
       '/third': (context) => const ThirdRoute(),
-      '/fourth': (context) => const FourthRoute(),
+      '/fourth': (context) =>  FourthRoute(),
     },
   )); //MaterialApp
 }
@@ -59,15 +59,20 @@ class HomeRoute extends StatelessWidget {
                                 prefixIconColor: Colors.black87,
                                 border: OutlineInputBorder(),
                               ),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
                               onChanged: (String value) {},
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'email required';
+                                //a.aaba@aa1a.com
+                                if (value!.isEmpty ||
+                                    !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}')
+                                        .hasMatch(value)) {
+                                  return 'Enter correct email!';
+                                } else {
+                                  return null;
                                 }
                               },
-                            )),
+                            ),
+                        ),
                         const SizedBox(height: 30.0),
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 35),
@@ -82,18 +87,21 @@ class HomeRoute extends StatelessWidget {
                                 border: OutlineInputBorder(),
                               ),
                               autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              onChanged: (String value) {},
+                              AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'password required';
+                                  return "Please create a password";
+                                } else if (value.length < 6) {
+                                  return "Must be atleast 6 chars";
+                                } else {
+                                  return null;
                                 }
                               },
                             )),
                         const SizedBox(height: 30.0),
                         Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 150),
+                            const EdgeInsets.symmetric(horizontal: 150),
                             child: MaterialButton(
                                 minWidth: double.infinity,
                                 onPressed: () {
@@ -105,11 +113,11 @@ class HomeRoute extends StatelessWidget {
                                 color: Colors.black,
                                 textColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
+                                    borderRadius: BorderRadius.circular(50)),
                                 child: const Text('Login'))),
                         Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 150),
+                            const EdgeInsets.symmetric(horizontal: 150),
                             child: MaterialButton(
                                 minWidth: double.infinity,
                                 onPressed: () {
@@ -118,7 +126,7 @@ class HomeRoute extends StatelessWidget {
                                 color: Colors.black,
                                 textColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
+                                    borderRadius: BorderRadius.circular(50)),
                                 child: const Text('Sign up'))),
                       ],
                     ),
@@ -501,7 +509,9 @@ class ThirdRoute extends StatelessWidget {
 //--------------------------Sign up------------------------///
 
 class FourthRoute extends StatelessWidget {
-  const FourthRoute({key}) : super(key: key);
+ FourthRoute({key}) : super(key: key);
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -534,6 +544,7 @@ class FourthRoute extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 25),
                 child: Form(
+                  key: _formkey,
                   child: Column(
                     children: [
                       Padding(
@@ -542,123 +553,143 @@ class FourthRoute extends StatelessWidget {
                             keyboardType: TextInputType.name,
                             decoration: const InputDecoration(
                               labelText: 'First Name',
-                              hintText: 'Enter your Name',
+                              hintText: 'Enter Name',
                               prefixIconColor: Colors.black87,
                               border: OutlineInputBorder(),
                             ),
                             autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            AutovalidateMode.onUserInteraction,
                             onChanged: (String value) {},
                             validator: (value) {
-                              return value!.isEmpty
-                                  ? 'Please enter your First Name'
-                                  : null;
+                              if (value!.isEmpty ||
+                                  !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                                return 'Should enter Alphabets only!';
+                              } else {
+                                return null;
+                              }
                             },
                           )),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextFormField(
-                            obscureText: true,
+                            obscureText: false,
                             keyboardType: TextInputType.name,
                             decoration: const InputDecoration(
                               labelText: 'Last Name',
-                              hintText: 'Enter your Last name',
+                              hintText: 'Enter Lastname',
                               prefixIconColor: Colors.black87,
                               border: OutlineInputBorder(),
                             ),
                             autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            AutovalidateMode.onUserInteraction,
                             onChanged: (String value) {},
                             validator: (value) {
-                              return value!.isEmpty ? 'error' : null;
+                              if (value!.isEmpty ||
+                                  !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                                return 'Should enter Alphabets only!';
+                              } else {
+                                return null;
+                              }
                             },
                           )),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextFormField(
-                            obscureText: true,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: const InputDecoration(
-                              labelText: 'Age',
-                              hintText: 'Enter your Age',
-                              prefixIconColor: Colors.black87,
-                              border: OutlineInputBorder(),
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            onChanged: (String value) {},
-                            validator: (value) {
-                              return value!.isEmpty
-                                  ? 'Please Enter your Age'
-                                  : null;
-                            },
+                              obscureText: false,
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration: const InputDecoration(
+                                labelText: 'Age',
+                                hintText: 'Enter your Age',
+                                prefixIconColor: Colors.black87,
+                                border: OutlineInputBorder(),
+                              ),
+                              autovalidateMode:
+                              AutovalidateMode.onUserInteraction,
+                              onChanged: (String value) {},
+                              validator: (value) {
+                                if (value!.length == 18 ||
+                                    double.parse(value) < 18) {
+                                  return ('Age should be 18 years old and above');
+                                } else {
+                                  return null;
+                                }
+                              }
                           )),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextFormField(
-                            obscureText: true,
+                            obscureText: false,
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
                               labelText: 'Gender',
-                              hintText: 'Enter your Gender',
+                              hintText: 'Gender',
                               prefixIconColor: Colors.black87,
                               border: OutlineInputBorder(),
                             ),
                             autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            AutovalidateMode.onUserInteraction,
                             onChanged: (String value) {},
                             validator: (value) {
                               return value!.isEmpty
-                                  ? 'Please Enter your Gender'
+                                  ? 'Please enter your Gender'
                                   : null;
                             },
                           )),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextFormField(
-                            obscureText: true,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: const InputDecoration(
-                              labelText: 'Mobile No.',
-                              hintText: 'Enter your Mobile no.',
-                              prefixIconColor: Colors.black87,
-                              border: OutlineInputBorder(),
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            onChanged: (String value) {},
-                            validator: (value) {
-                              return value!.isEmpty
-                                  ? 'Please Enter your Mobile no.'
-                                  : null;
-                            },
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                labelText: 'Phone',
+                                hintText: 'Phone',
+                                prefixIconColor: Colors.black87,
+                                border: OutlineInputBorder(),
+                              ),
+                              keyboardType: TextInputType.phone,
+                              autovalidateMode:
+                              AutovalidateMode.onUserInteraction,
+                              onChanged: (String value) {},
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter phone number';
+                                } else if (value.length < 11)
+                                  return 'Please enter correct number';
+                                else if (value.length > 11)
+                                  return 'Please enter correct number';
+                                return null;
+                              }
                           )),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextFormField(
-                            obscureText: true,
+                            obscureText: false,
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
                               labelText: 'Email Address',
-                              hintText: 'Enter your Email Address',
+                              hintText: 'Enter Address',
                               prefixIconColor: Colors.black87,
                               border: OutlineInputBorder(),
                             ),
                             autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            AutovalidateMode.onUserInteraction,
                             onChanged: (String value) {},
                             validator: (value) {
-                              return value!.isEmpty
-                                  ? 'please enter your Address'
-                                  : null;
+                              //a.aaba@aa1a.com
+                              if (value!.isEmpty ||
+                                  !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w]{2,4}')
+                                      .hasMatch(value)) {
+                                return 'Enter correct email!';
+                              } else {
+                                return null;
+                              }
                             },
                           )),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 35),
                           child: TextFormField(
@@ -666,24 +697,32 @@ class FourthRoute extends StatelessWidget {
                             keyboardType: TextInputType.visiblePassword,
                             decoration: const InputDecoration(
                               labelText: 'Password',
-                              hintText: 'Enter your password',
+                              hintText: 'Enter the password',
                               prefixIconColor: Colors.black87,
                               border: OutlineInputBorder(),
                             ),
-                            onChanged: (String value) {},
+                            autovalidateMode:
+                            AutovalidateMode.onUserInteraction,
                             validator: (value) {
-                              return value!.isEmpty
-                                  ? 'Please your password'
-                                  : null;
+                              if (value == null || value.isEmpty) {
+                                return "Please create a password";
+                              } else if (value.length < 6) {
+                                return "Must be atleast 6 chars";
+                              } else {
+                                return null;
+                              }
                             },
                           )),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 30.0),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 150),
                           child: MaterialButton(
                               minWidth: double.infinity,
                               onPressed: () {
-                                Navigator.pushNamed(context, '/first');
+                                if (_formkey.currentState!.validate()) {
+                                  Navigator.pushNamed(context, '/first');
+                                }
+                                return;
                               },
                               color: Colors.black,
                               textColor: Colors.white,
@@ -696,6 +735,6 @@ class FourthRoute extends StatelessWidget {
           ],
         ),
       ),
-    ));
+        ));
   }
 }
